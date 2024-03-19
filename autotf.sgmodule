@@ -1,7 +1,7 @@
 #!name=Auto Join TestFlight
 #!desc=Theo dõi vị trí TestFlight và đóng Modul, Chỉ dùng cho Surge
 #!system=ios
-#!arguments=INFO_FETCH_SCRIPT_NAME:Thu thập thông tin,CRON_SECONDS:5,START_HOUR:0,END_HOUR:23
+#!arguments=INFO_FETCH_SCRIPT_NAME:Get Info,CRON_SECONDS:5,START_HOUR:0,END_HOUR:23
 #!arguments-desc=[Thiết đặt tham số]\n1. INFO_FETCH_SCRIPT_NAME: Tập lệnh bắt đầu và dừng "Thu thập thông tin" sau khi lấy được token và APP_ID để tránh MitM không cần thiết, nên thêm dấu # vào sau khi lấy APP_ID để dừng tập lệnh;\n2. CRON_SECONDS: Tuỳ chỉnh thời gian thực thi tập lệnh, Theo mặc định nó được thực thi mỗi 5s;\n3. START_HOUR: Tuỳ chỉnh thời gian script thực thi mỗi ngày, mặc định là 0h (mặc định bắt đầu và kết thúc cả ngày);\n4. END_HOUR: Tuỳ chỉnh thời gian script ngừng mỗi ngày, mặc định là 23h00 (mặc định là bắt đầu và kết thúc cả ngày);\n\n[Hướng dẫn]\n1. Mở Surge http-api;\n2. Sau khi kích hoạt "Thu thập thông tin" hãy mở app TestFlight để lấy token;\n3. Sau khi có token hãy copy link TestFlight và mở bằng trình duyệt để lấy APP_ID ;\n4. Điều chỉnh các tham số CRON_SECONDS,START_HOUR,END_HOUR để chọn tần suất thực thi cũng như khoảng thời gian bắt đầu và kết thúc tập lệnh;\n\n[Giới thiệu Modul]\n▎Thu thập và lưu trữ ID ứng dụng theo cách tự động do tác giả TestFlight cung cấp，và cố gắng tự động tham gia TestFlight.\n▎Tự động xóa ID ứng dụng TestFlight không hợp lệ, loại giữ chỗ có thể xem đầu ra nhật ký.\n▎Tương thích với các tham số mới của Surge, đơn giản hóa cấu hình tùy chỉnh modul và loại bỏ các môi trường phụ thuộc khác.\n▎Kênh phát hành ứng dụng TestFlight được đề xuất https://t.me/TestFlightX。
 
 [Script]
