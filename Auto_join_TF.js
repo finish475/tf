@@ -77,13 +77,13 @@ async function autoPost(ID, ids) {
     return new Promise(resolve => {
         $httpClient.get({url: testurl + ID, headers: header}, (error, response, data) => {
             if (error) {
-                console.log(`${ID} Mất kết nối mạng: ${error}，Đã lưu trữ APP_ID`);
+                console.log(`${ID} Mất kết nối mạng: ${error}，Bảo lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (response.status === 500) {
-                console.log(`${ID} Lỗi máy chủ，Mã trạng thái 500，Đã lưu trữ APP_ID`);
+                console.log(`${ID} Lỗi máy chủ，Mã trạng thái 500，Bảo lưu APP_ID`);
                 resolve();
                 return;
             }
@@ -101,19 +101,19 @@ async function autoPost(ID, ids) {
             try {
                 jsonData = JSON.parse(data);
             } catch (parseError) {
-                console.log(`${ID} Phản hồi không thành công: ${parseError}，Đã lưu trữ APP_ID`);
+                console.log(`${ID} Phản hồi không thành công: ${parseError}，Bảo lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (!jsonData || !jsonData.data) {
-                console.log(`${ID} Không thể chấp nhận lời mời，Đã lưu trữ APP_ID`);
+                console.log(`${ID} Không thể chấp nhận lời mời，Bảo lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (jsonData.data.status === 'FULL') {
-                console.log(`${ID} Bản beta đã đầy，Đã lưu trữ APP_ID`);
+                console.log(`${ID} Bản beta đã đầy，Bảo lưu APP_ID`);
                 resolve();
                 return;
             }
@@ -124,7 +124,7 @@ async function autoPost(ID, ids) {
                     try {
                         jsonBody = JSON.parse(body);
                     } catch (parseError) {
-                        console.log(`${ID} Phản hồi tham gia không thành công: ${parseError}，Đã lưu trữ APP_ID`);
+                        console.log(`${ID} Phản hồi tham gia không thành công: ${parseError}，Bảo lưu APP_ID`);
                         resolve();
                         return;
                     }
@@ -138,7 +138,7 @@ async function autoPost(ID, ids) {
                         $notification.post(jsonBody.data.name + ' TestFlight tham gia thành công', '', 'Tất cả APP ID đã được xử lý');
                     }
                 } else {
-                    console.log(`${ID} 加入失败: ${error || `Mã trạng thái ${response.status}`}，Đã lưu trữ APP_ID`);
+                    console.log(`${ID} 加入失败: ${error || `Mã trạng thái ${response.status}`}，Bảo lưu APP_ID`);
                 }
                 resolve();
             });
