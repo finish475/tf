@@ -138,7 +138,7 @@ async function autoPost(ID, ids) {
                         $notification.post(jsonBody.data.name + ' Tham gia Beta thành công', '', 'Tất cả APP ID đã được xử lý');
                     }
                 } else {
-                    console.log(`${ID} 加入失败: ${error || `Mã lỗi ${response.status}`}，đã lưu APP_ID`);
+                    console.log(`${ID} Tham gia thất bại: ${error || `Mã lỗi ${response.status}`}，đã lưu APP_ID`);
                 }
                 resolve();
             });
