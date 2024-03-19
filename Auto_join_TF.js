@@ -107,7 +107,7 @@ async function autoPost(ID, ids) {
             }
 
             if (!jsonData || !jsonData.data) {
-                console.log(`${ID} Không thể chấp nhận lời mời，đã lưu APP_ID`);
+                console.log(`${ID} Không nhận người mới，đã lưu APP_ID`);
                 resolve();
                 return;
             }
