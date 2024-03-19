@@ -32,7 +32,7 @@ if (typeof $request !== 'undefined' && $request) {
             if (!appIdSet.has(appId)) {
                 appIdSet.add(appId);
                 $persistentStore.write(Array.from(appIdSet).join(','), 'APP_ID');
-                $notification.post('Đã chụp APP_ID', '', `Đã lưu APP_ID: ${appId}`);
+                $notification.post('Tìm thấy APP_ID', '', `Đã lưu APP_ID: ${appId}`);
                 console.log(`Đã lưu APP_ID: ${appId}`);
             } else {
                 $notification.post('APP_ID Lặp lại', '', `APP_ID: ${appId} APP_ID đã tồn tại，Không cần thêm lại.`);
@@ -48,7 +48,7 @@ if (typeof $request !== 'undefined' && $request) {
     !(async () => {
         let ids = $persistentStore.read('APP_ID');
         if (!ids) {
-            console.log('Không phát hiện APP_ID');
+            console.log('Không thấy APP_ID');
             $done();
         } else {
             ids = ids.split(',');
@@ -56,7 +56,7 @@ if (typeof $request !== 'undefined' && $request) {
                 await autoPost(ID, ids);
             }
             if (ids.length === 0) {
-                $notification.post('Tất cả TestFlight đã được thêm vào 🎉', '', 'Modul tự động tắt');
+                $notification.post('Tất cả Beta đã được thêm vào 🎉', '', 'Modul tự động tắt');
                 $done($httpAPI('POST', '/v1/modules', {'Auto Join TestFlight': false}));
             } else {
                 $done();
@@ -77,22 +77,22 @@ async function autoPost(ID, ids) {
     return new Promise(resolve => {
         $httpClient.get({url: testurl + ID, headers: header}, (error, response, data) => {
             if (error) {
-                console.log(`${ID} Mất kết nối mạng: ${error}，Bảo lưu APP_ID`);
+                console.log(`${ID} Mất kết nối: ${error}，đã lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (response.status === 500) {
-                console.log(`${ID} Lỗi máy chủ，Mã trạng thái 500，Bảo lưu APP_ID`);
+                console.log(`${ID} Lỗi máy chủ，Mã lỗi 500，đã lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (response.status !== 200) {
-                console.log(`${ID} Liên kết không hợp lệ: Mã trạng thái ${response.status}，Đã xoá APP_ID`);
+                console.log(`${ID} Liên kết không hợp lệ: Mã lỗi ${response.status}，Đã xoá APP_ID`);
                 ids.splice(ids.indexOf(ID), 1);
                 $persistentStore.write(ids.join(','), 'APP_ID');
-                $notification.post('Không phải là liên kết TestFlight hợp lệ', '', `${ID} Đã bị xoá`);
+                $notification.post('Liên kết không hợp lệ', '', `${ID} Đã bị xoá`);
                 resolve();
                 return;
             }
@@ -101,19 +101,19 @@ async function autoPost(ID, ids) {
             try {
                 jsonData = JSON.parse(data);
             } catch (parseError) {
-                console.log(`${ID} Phản hồi không thành công: ${parseError}，Bảo lưu APP_ID`);
+                console.log(`${ID} Phản hồi không thành công: ${parseError}，đã lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (!jsonData || !jsonData.data) {
-                console.log(`${ID} Không thể chấp nhận lời mời，Bảo lưu APP_ID`);
+                console.log(`${ID} Không thể chấp nhận lời mời，đã lưu APP_ID`);
                 resolve();
                 return;
             }
 
             if (jsonData.data.status === 'FULL') {
-                console.log(`${ID} Bản beta đã đầy，Bảo lưu APP_ID`);
+                console.log(`${ID} Bản beta đầy，đã lưu APP_ID`);
                 resolve();
                 return;
             }
@@ -124,21 +124,21 @@ async function autoPost(ID, ids) {
                     try {
                         jsonBody = JSON.parse(body);
                     } catch (parseError) {
-                        console.log(`${ID} Phản hồi tham gia không thành công: ${parseError}，Bảo lưu APP_ID`);
+                        console.log(`${ID} Tham gia không thành công: ${parseError}，đã lưu APP_ID`);
                         resolve();
                         return;
                     }
 
-                    console.log(`${jsonBody.data.name} TestFlight加入成功`);
+                    console.log(`${jsonBody.data.name} Tham gia Beta thành công`);
                     ids.splice(ids.indexOf(ID), 1);
                     $persistentStore.write(ids.join(','), 'APP_ID');
                     if (ids.length > 0) {
-                        $notification.post(jsonBody.data.name + ' TestFlight tham gia thành công', '', `Tiếp tục thực hiện APP ID：${ids.join(',')}`);
+                        $notification.post(jsonBody.data.name + ' Tham gia Beta thành công', '', `Tiếp tục thực hiện APP ID：${ids.join(',')}`);
                     } else {
-                        $notification.post(jsonBody.data.name + ' TestFlight tham gia thành công', '', 'Tất cả APP ID đã được xử lý');
+                        $notification.post(jsonBody.data.name + ' Tham gia Beta thành công', '', 'Tất cả APP ID đã được xử lý');
                     }
                 } else {
-                    console.log(`${ID} 加入失败: ${error || `Mã trạng thái ${response.status}`}，Bảo lưu APP_ID`);
+                    console.log(`${ID} 加入失败: ${error || `Mã lỗi ${response.status}`}，đã lưu APP_ID`);
                 }
                 resolve();
             });
